@@ -1,12 +1,12 @@
 {
   "Genres": {
-    "Book": {
+    "Fantasty2": {
       "Books": [
         {
-          "Name": "Book",
+          "Name": "Fantasty2",
           "Color": "rgb(255, 105, 180)",
-          "TextColor": "#FF4500",
-          "Font": "SourceSansBold",
+          "TextColor": "rgb(30, 30, 47)",
+          "Font": "ComicSansMS",
           "Chapters": {}
         }
       ]
