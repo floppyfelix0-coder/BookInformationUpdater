@@ -10,6 +10,17 @@
           "Chapters": {}
         }
       ]
+    },
+    "Christanity": {
+      "Books": [
+        {
+          "Name": "God is good",
+          "Color": "rgb(138, 43, 226)",
+          "TextColor": "rgb(138, 43, 226)",
+          "Font": "GothamBold",
+          "Chapters": {}
+        }
+      ]
     }
   }
 }
