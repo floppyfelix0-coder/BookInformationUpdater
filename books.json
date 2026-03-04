@@ -1,32 +1,13 @@
 {
   "Genres": {
-    "Fantasy": {
+    "BOok": {
       "Books": [
         {
-          "Name": "The Dragon's Rise",
-          "Color": "#FF4500",       
-          "TextColor": "#FFFFFF",   
-          "Font": "GothamBold",      
-          "Chapters": {
-            "1": {
-              "Pages": {
-                "1": "Once upon a time..."
-              }
-            }
-          }
-        },
-        {
-          "Name": "Shadow of the Moonblade",
-          "Color": "#1E1E2F",       
-          "TextColor": "#C0C0C0",  
-          "Font": "SourceSansBold", 
-          "Chapters": {
-            "1": {
-              "Pages": {
-                "1": "The night was silent, but danger was awake."
-              }
-            }
-          }
+          "Name": "BOok",
+          "Color": "rgb(255, 105, 180)",
+          "TextColor": "#FF4500",
+          "Font": "SourceSansBold",
+          "Chapters": {}
         }
       ]
     }
