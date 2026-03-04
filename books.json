@@ -1,1 +1,35 @@
-
+{
+  "name": "books.json",
+  "path": "books.json",
+  "sha": "8b137891791fe96927ad78e64b0aad7bded08bdc",
+  "size": 1,
+  "url": "https://api.github.com/repos/floppyfelix0-coder/BookInformationUpdater/contents/books.json?ref=main",
+  "html_url": "https://github.com/floppyfelix0-coder/BookInformationUpdater/blob/main/books.json",
+  "git_url": "https://api.github.com/repos/floppyfelix0-coder/BookInformationUpdater/git/blobs/8b137891791fe96927ad78e64b0aad7bded08bdc",
+  "download_url": "https://raw.githubusercontent.com/floppyfelix0-coder/BookInformationUpdater/main/books.json",
+  "type": "file",
+  "content": "Cg==\n",
+  "encoding": "base64",
+  "_links": {
+    "self": "https://api.github.com/repos/floppyfelix0-coder/BookInformationUpdater/contents/books.json?ref=main",
+    "git": "https://api.github.com/repos/floppyfelix0-coder/BookInformationUpdater/git/blobs/8b137891791fe96927ad78e64b0aad7bded08bdc",
+    "html": "https://github.com/floppyfelix0-coder/BookInformationUpdater/blob/main/books.json"
+  },
+  "Fantasy": {
+    "fantasy": {
+      "books": {
+        "magical_wonder": {
+          "title": "Magical Wonder",
+          "author": "Felix Rodriguez",
+          "description": "I boy explores the world and finds the..",
+          "content": "We won't and might not see each other ever again but I know one day you will feel this way but never going to tell you why this might be me I don't really know if ill ever be free but thanks for being here with me",
+          "font": "Arial",
+          "tileColor": "#e74c3c",
+          "textColor": "#ecf0f1",
+          "wordCount": 47,
+          "publishedAt": "2026-03-04T06:08:53.919Z"
+        }
+      }
+    }
+  }
+}
