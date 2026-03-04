@@ -11,6 +11,16 @@
               }
             }
           }
+        },
+        {
+          "Name": "Shadow of the Moonblade",
+          "Chapters": {
+            "1": {
+              "Pages": {
+                "1": "The night was silent, but danger was awake."
+              }
+            }
+          }
         }
       ]
     }
