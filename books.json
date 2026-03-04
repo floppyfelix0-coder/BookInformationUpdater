@@ -1,9 +1,9 @@
 {
   "Genres": {
-    "BOok": {
+    "Book": {
       "Books": [
         {
-          "Name": "BOok",
+          "Name": "Book",
           "Color": "rgb(255, 105, 180)",
           "TextColor": "#FF4500",
           "Font": "SourceSansBold",
