@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dynamic Cool Book Editor</title>
+<style>
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 20px;
+    background: linear-gradient(to right, #f0f0f5, #d9e2f3);
+    color: #333;
+}
+h1 {
+    text-align: center;
+    color: #2c3e50;
+    margin-bottom: 20px;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+}
+.book {
+    background: #fff;
+    padding: 20px;
+    margin-bottom: 25px;
+    border-radius: 12px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    transition: transform 0.2s;
+}
+.book:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+}
+label { display: block; margin-top: 10px; font-weight: bold; }
+.color-swatch {
+    width: 35px; height: 35px; display: inline-block;
+    margin: 3px; cursor: pointer;
+    border: 2px solid #ccc; border-radius: 6px;
+    transition: all 0.2s;
+}
+.color-swatch:hover { transform: scale(1.1); }
+.color-swatch.selected { border: 3px solid #000; }
+.font-btn {
+    padding: 6px 12px; margin: 3px; cursor: pointer;
+    border: 1px solid #ccc; border-radius: 6px; transition: all 0.2s;
+}
+.font-btn:hover { background: #3498db; color: #fff; }
+.font-btn.selected { border: 2px solid #000; font-weight: bold; background: #2ecc71; color: #fff; }
+button {
+    margin-top: 15px; padding: 12px 25px; cursor: pointer;
+    border: none; border-radius: 8px;
+    background: linear-gradient(90deg, #3498db, #2ecc71);
+    color: #fff; font-weight: bold; transition: all 0.2s;
+}
+button:hover { transform: scale(1.05); box-shadow: 0 5px 15px rgba(0,0,0,0.2);}
+#output {
+    background: #1e1e2f; color: #f0f0f0; padding: 15px; border-radius: 10px;
+    overflow-x: auto; white-space: pre-wrap;
+    font-family: 'Courier New', monospace;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1); margin-top: 20px;
+}
+.editor {
+    min-height: 120px; border: 2px solid #3498db; padding: 8px;
+    margin-top: 5px; border-radius: 8px; background: #fefefe;
+    box-shadow: inset 0 2px 5px rgba(0,0,0,0.05); overflow-y: auto;
+}
+.marker {
+    background: #f1c40f; font-weight: bold; padding: 2px 4px; border-radius: 3px;
+}
+</style>
+</head>
+<body>
+
+<h1>🌟 Dynamic Cool Book Editor 🌟</h1>
+
+<div id="books-container"></div>
+
+<div style="text-align:center;">
+<button onclick="addBook()">➕ Add Book</button>
+<button onclick="generateJSON()">💾 Generate JSON</button>
+<button onclick="publishBook()">🚀 Publish Book</button>
+</div>
+
+<h2>Output JSON:</h2>
+<pre id="output"></pre>
+
+<script>
+// Predefined colors and fonts
+const colors = ["#FF4500", "#1E1E2F", "#00BFFF", "#32CD32", "#FFD700", "#8A2BE2", "#FF69B4"];
+const fonts = ["GothamBold", "SourceSansBold", "Arial", "ComicSansMS"];
+
+// --- Add a new book ---
+function addBook() {
+    const container = document.getElementById('books-container');
+    const bookDiv = document.createElement('div');
+    bookDiv.className = 'book';
+
+    const colorSwatchesHTML = colors.map(c => `<div class="color-swatch" style="background:${c}" onclick="selectColor(this)"></div>`).join('');
+    const textColorSwatchesHTML = colors.map(c => `<div class="color-swatch" style="background:${c}" onclick="selectTextColor(this)"></div>`).join('');
+    const fontButtonsHTML = fonts.map(f => `<button type="button" class="font-btn" onclick="selectFont(this)">${f}</button>`).join('');
+
+    bookDiv.innerHTML = `
+        <label>Book Name: <input type="text" class="book-name" placeholder="Enter book title"></label>
+        <label>Genre: <input type="text" class="book-genre" placeholder="e.g., Fantasy, Sci-Fi"></label>
+        <label>Book Color:</label><div class="book-color-container">${colorSwatchesHTML}</div>
+        <input type="hidden" class="book-color" value="${colors[0]}">
+        <label>Text Color:</label><div class="text-color-container">${textColorSwatchesHTML}</div>
+        <input type="hidden" class="text-color" value="${colors[0]}">
+        <label>Font:</label><div class="font-container">${fontButtonsHTML}</div>
+        <input type="hidden" class="book-font" value="${fonts[0]}">
+        <label>Book Text Editor:</label>
+        <div class="editor" contenteditable="true"></div>
+        <button type="button" onclick="insertMarker(this,'Chapter')">Insert Chapter</button>
+        <button type="button" onclick="insertMarker(this,'Page')">Insert Page</button>
+    `;
+    container.appendChild(bookDiv);
+}
+
+// --- Color and font selection ---
+function selectColor(elem) {
+    elem.parentNode.querySelectorAll('.color-swatch').forEach(s => s.classList.remove('selected'));
+    elem.classList.add('selected');
+    elem.parentNode.nextElementSibling.value = elem.style.background;
+}
+function selectTextColor(elem) {
+    elem.parentNode.querySelectorAll('.color-swatch').forEach(s => s.classList.remove('selected'));
+    elem.classList.add('selected');
+    elem.parentNode.nextElementSibling.value = elem.style.background;
+}
+function selectFont(elem) {
+    elem.parentNode.querySelectorAll('.font-btn').forEach(b => b.classList.remove('selected'));
+    elem.classList.add('selected');
+    elem.parentNode.nextElementSibling.value = elem.textContent;
+}
+
+// --- Insert Chapter/Page marker ---
+function insertMarker(btn,type){
+    const editor = btn.parentNode.querySelector('.editor');
+    const sel = window.getSelection();
+    const range = sel.getRangeAt(0);
+    const span = document.createElement('span');
+    span.textContent = `[[${type}]]`;
+    span.className = 'marker';
+    range.insertNode(span);
+    range.setStartAfter(span);
+    range.collapse(true);
+    sel.removeAllRanges();
+    sel.addRange(range);
+}
+
+// --- Generate JSON ---
+function generateJSON() {
+    const container = document.getElementById('books-container');
+    const bookDivs = container.getElementsByClassName('book');
+    const finalJSON = { Genres: {} };
+
+    for (const div of bookDivs) {
+        const name = div.querySelector('.book-name').value;
+        const genre = div.querySelector('.book-genre').value || "Unknown";
+        const color = div.querySelector('.book-color').value;
+        const textColor = div.querySelector('.text-color').value;
+        const font = div.querySelector('.book-font').value;
+        const editorContent = div.querySelector('.editor').innerText;
+
+        const chapters = {};
+        let currentChapter = "Chapter 1";
+        let currentPage = "1";
+
+        editorContent.split(/\n/).forEach(line => {
+            line = line.trim();
+            if(line.startsWith('[[Chapter]]')){
+                currentChapter = line.replace('[[Chapter]]','').trim();
+                currentPage = "1";
+                if(!chapters[currentChapter]) chapters[currentChapter] = { Pages:{} };
+            } else if(line.includes('[[Page]]')){
+                currentPage = (parseInt(currentPage)+1).toString();
+                const cleanLine = line.replace('[[Page]]','').trim();
+                if(cleanLine!==""){
+                    if(!chapters[currentChapter]) chapters[currentChapter] = { Pages:{} };
+                    chapters[currentChapter].Pages[currentPage] = cleanLine + "\n";
+                }
+            } else if(line!==""){
+                if(!chapters[currentChapter]) chapters[currentChapter] = { Pages:{} };
+                chapters[currentChapter].Pages[currentPage] = (chapters[currentChapter].Pages[currentPage] || "") + line + "\n";
+            }
+        });
+
+        if(!finalJSON.Genres[genre]) finalJSON.Genres[genre] = { Books: [] };
+        finalJSON.Genres[genre].Books.push({ Name:name, Color:color, TextColor:textColor, Font:font, Chapters:chapters });
+    }
+
+    document.getElementById('output').textContent = JSON.stringify(finalJSON,null,2);
+}
+
+// --- Publish to GitHub ---
+async function publishBook(){
+    generateJSON();
+    const jsonContent = document.getElementById('output').textContent;
+
+    const owner = "floppyfelix0-coder";
+    const repo = "BookInformationUpdater";
+    const path = "books.json";
+    const branch = "main";
+    const token = "YOUR_PERSONAL_ACCESS_TOKEN"; // Use a real PAT or backend proxy
+
+    try{
+        // 1️⃣ Get SHA of current file
+        const getResp = await fetch(`https://api.github.com/repos/${owner}/${repo}/contents/${path}?ref=${branch}`,{
+            headers:{ Authorization:`token ${token}` }
+        });
+        const fileData = await getResp.json();
+        const sha = fileData.sha;
+
+        // 2️⃣ Update books.json
+        const updateResp = await fetch(`https://api.github.com/repos/${owner}/${repo}/contents/${path}`,{
+            method:"PUT",
+            headers:{
+                "Authorization":`token ${token}`,
+                "Content-Type":"application/json"
+            },
+            body: JSON.stringify({
+                message:"Updated books.json from web editor",
+                content:btoa(unescape(encodeURIComponent(jsonContent))),
+                sha:sha,
+                branch:branch
+            })
+        });
+
+        const result = await updateResp.json();
+        console.log(result);
+        alert("✅ books.json updated successfully!");
+    } catch(err){
+        console.error(err);
+        alert("❌ Failed to publish. Check console for details.");
+    }
+}
+</script>
+
+</body>
+</html>
